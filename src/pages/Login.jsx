@@ -33,7 +33,7 @@ export default function Login() {
       return;
     }
 
-    try {
+    try { 
       await login(email);
       setStep("verify");
       setMessage("Verification code sent! Check your email.");
