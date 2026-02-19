@@ -88,24 +88,8 @@ campus-trade/
 
 CampusTrade is a **Single Page Application (SPA)** that interacts directly with cloud services, eliminating the need for a traditional middle-tier server.
 
-```mermaid
-graph TD
-    User([Student]) <-->|HTTPS| Client[React Frontend]
+<img width="3460" height="2463" alt="Student Authentication Flow-2026-02-18-071357" src="https://github.com/user-attachments/assets/99f65499-bbb2-4c3f-ae9a-50386e279f5f" />
 
-    subgraph Supabase Cloud
-        Auth[GoTrue Auth]
-        DB[(PostgreSQL)]
-        Storage[File Storage]
-        Realtime[Realtime Engine]
-    end
-
-    Client -->|1. Sign In (OTP)| Auth
-    Client -->|2. Query/Mutate Data| DB
-    Client -->|3. Upload Images| Storage
-    Client <-->|4. Subscribe to Chat| Realtime
-
-    DB -.->|Row Level Security (RLS)| Auth
-```
 
 ---
 
