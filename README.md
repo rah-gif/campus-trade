@@ -185,4 +185,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-Developed with ❤️ by **Rahul** for the Student Community.
+Developed by **Chethana Rahul** for the Student Community.
