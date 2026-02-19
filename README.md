@@ -90,7 +90,6 @@ CampusTrade is a **Single Page Application (SPA)** that interacts directly with 
 
 <img width="3460" height="2463" alt="Student Authentication Flow-2026-02-18-071357" src="https://github.com/user-attachments/assets/99f65499-bbb2-4c3f-ae9a-50386e279f5f" />
 
-
 ---
 
 ## 🔒 Security Measures
@@ -135,7 +134,9 @@ To run this project locally:
 ### Prerequisites
 
 - Node.js (v16+)
+- Node.js (v16+)
 - npm or yarn
+- Supabase Project (Free Tier)
 
 ### Steps
 
@@ -157,16 +158,23 @@ To run this project locally:
 
     ```env
     VITE_SUPABASE_URL=your_supabase_url
+    VITE_SUPABASE_URL=your_supabase_url
     VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
     ```
 
-4.  **Run Development Server**
+4.  **Database Setup**
+    This project uses Supabase as the backend/database.
+    - Go to your Supabase Dashboard -> **SQL Editor**.
+    - Copy the contents of `schema.sql` from this repository.
+    - Run the script to generate all Tables, RLS Policies, and Triggers.
+
+5.  **Run Development Server**
 
     ```bash
     npm run dev
     ```
 
-5.  **Build for Production**
+6.  **Build for Production**
     ```bash
     npm run build
     ```
