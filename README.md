@@ -134,7 +134,6 @@ To run this project locally:
 ### Prerequisites
 
 - Node.js (v16+)
-- Node.js (v16+)
 - npm or yarn
 - Supabase Project (Free Tier)
 
