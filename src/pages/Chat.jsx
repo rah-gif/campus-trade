@@ -56,7 +56,7 @@ function Chat() {
           const realMessage = text.substring(endIdx + 3);
           return { reply: replyData, content: realMessage };
         } catch (e) {
-          console.error("Failed to parse reply", e);
+          // console.error("Failed to parse reply", e);
         }
       }
     }
@@ -114,6 +114,7 @@ function Chat() {
       if (insertError) throw insertError;
     } catch (error) {
       console.error("Upload failed", error);
+
       alert("Upload failed: " + error.message);
     } finally {
       setIsUploading(false);
@@ -123,7 +124,7 @@ function Chat() {
     }
   };
 
-  console.log("Chat Render. Active Conv:", activeConversation);
+  // console.log("Chat Render. Active Conv:", activeConversation);
 
   // Fetch Partner Name if missing (e.g. direct nav)
   useEffect(() => {
@@ -181,7 +182,7 @@ function Chat() {
             item:items(title, image_url),
             sender:sender_id(name),
             receiver:receiver_id(name)
-        `
+        `,
         )
         .or(`sender_id.eq.${user.id},receiver_id.eq.${user.id}`)
         .order("created_at", { ascending: false });
@@ -205,7 +206,7 @@ function Chat() {
         // Check Local Storage Deletion (Fallback for RLS/Update failures)
         // If we deleted this chat locally, ignore old messages
         const deletedTimestamp = localStorage.getItem(
-          `deleted_conversation_${key}`
+          `deleted_conversation_${key}`,
         );
         if (deletedTimestamp) {
           const msgTime = new Date(msg.created_at).getTime();
@@ -256,7 +257,7 @@ function Chat() {
           table: "messages",
           filter: `receiver_id=eq.${user.id}`,
         },
-        triggerRefresh
+        triggerRefresh,
       )
       .on(
         "postgres_changes",
@@ -266,7 +267,7 @@ function Chat() {
           table: "messages",
           filter: `sender_id=eq.${user.id}`,
         },
-        triggerRefresh
+        triggerRefresh,
       )
       .subscribe();
 
@@ -290,7 +291,7 @@ function Chat() {
           return { ...c, unread_count: 0 };
         }
         return c;
-      })
+      }),
     );
 
     const fetchMessages = async () => {
@@ -299,7 +300,7 @@ function Chat() {
         .select("*")
         .eq("item_id", activeConversation.item_id)
         .or(
-          `and(sender_id.eq.${user.id},receiver_id.eq.${activeConversation.other_user_id}),and(sender_id.eq.${activeConversation.other_user_id},receiver_id.eq.${user.id})`
+          `and(sender_id.eq.${user.id},receiver_id.eq.${activeConversation.other_user_id}),and(sender_id.eq.${activeConversation.other_user_id},receiver_id.eq.${user.id})`,
         )
         .order("created_at", { ascending: true });
 
@@ -317,7 +318,8 @@ function Chat() {
         const unreadIds = validMessages
           .filter((m) => m.receiver_id === user.id && !m.read)
           .map((m) => m.id);
-        console.log("Unread IDs in this chat:", unreadIds);
+        // console.log("Unread IDs in this chat:", unreadIds);
+
         if (unreadIds.length > 0) {
           const { error: updateError } = await supabase
             .from("messages")
@@ -336,7 +338,7 @@ function Chat() {
                   return { ...c, unread_count: 0 };
                 }
                 return c;
-              })
+              }),
             );
             // Force Navbar update
             window.dispatchEvent(new Event("messages-read"));
@@ -376,7 +378,7 @@ function Chat() {
                 // Find an optimistic message (numeric ID) with matching content
                 const optimisticIndex = prev.findIndex(
                   (m) =>
-                    typeof m.id === "number" && m.message === newMsg.message
+                    typeof m.id === "number" && m.message === newMsg.message,
                 );
                 if (optimisticIndex !== -1) {
                   const updated = [...prev];
@@ -400,7 +402,7 @@ function Chat() {
               // Do not refetch conversations here to avoid badge flickering
             }
           }
-        }
+        },
       )
       .subscribe();
 
@@ -465,7 +467,7 @@ function Chat() {
       if (error) {
         // Rollback optimistic update
         setMessages((prev) =>
-          prev.filter((msg) => msg.id !== optimisticMsg.id)
+          prev.filter((msg) => msg.id !== optimisticMsg.id),
         );
         console.error("Error sending message:", error.message);
       }
@@ -526,12 +528,12 @@ function Chat() {
           !(
             c.item_id === previousConversation.item_id &&
             c.other_user_id === previousConversation.other_user_id
-          )
-      )
+          ),
+      ),
     );
 
     try {
-      console.log("Deleting conversation:", previousConversation);
+      // console.log("Deleting conversation:", previousConversation);
 
       // 1. Mark Sent Messages as Deleted
       const { error: errSender, count: countSender } = await supabase
@@ -564,7 +566,7 @@ function Chat() {
         console.error("Failed to delete received messages:", errReceiver);
       }
 
-      console.log(`Deleted: ${countSender} sent, ${countReceiver} received.`);
+      // console.log(`Deleted: ${countSender} sent, ${countReceiver} received.`);
 
       // Implicit success if no major crash.
       // The optimistic UI update already handled the visual part.
@@ -663,7 +665,8 @@ function Chat() {
                     <div
                       key={idx}
                       onClick={() => {
-                        console.log("Clicked conversation:", conv);
+                        // console.log("Clicked conversation:", conv);
+
                         setActiveConversation(conv);
                       }}
                       className={`cursor-pointer w-full flex items-center p-4 transition-colors border-b border-gray-100 dark:border-gray-700/50 hover:bg-gray-50 dark:hover:bg-gray-700 ${
@@ -790,7 +793,7 @@ function Chat() {
                       const isImg =
                         displayMsg.image_url &&
                         /\.(jpg|jpeg|png|webp|gif|bmp)$/i.test(
-                          displayMsg.image_url
+                          displayMsg.image_url,
                         );
 
                       return (
@@ -844,7 +847,7 @@ function Chat() {
                                       onClick={() =>
                                         window.open(
                                           displayMsg.image_url,
-                                          "_blank"
+                                          "_blank",
                                         )
                                       }
                                     />
@@ -880,11 +883,11 @@ function Chat() {
                                           }`}
                                         >
                                           {displayMsg.message.startsWith(
-                                            "Sent a file: "
+                                            "Sent a file: ",
                                           )
                                             ? displayMsg.message.replace(
                                                 "Sent a file: ",
-                                                ""
+                                                "",
                                               )
                                             : "Document"}
                                         </p>
@@ -911,7 +914,7 @@ function Chat() {
                               {displayMsg.image_url &&
                                 !displayMsg.message.startsWith("Sent an") &&
                                 !displayMsg.message.startsWith(
-                                  "Sent a file:"
+                                  "Sent a file:",
                                 ) && (
                                   <p className="whitespace-pre-wrap break-words leading-relaxed text-sm mt-1">
                                     {displayMsg.message}
@@ -925,7 +928,7 @@ function Chat() {
                                 <span className="text-[10px]">
                                   {msg.created_at
                                     ? new Date(
-                                        msg.created_at
+                                        msg.created_at,
                                       ).toLocaleTimeString([], {
                                         hour: "2-digit",
                                         minute: "2-digit",
@@ -991,7 +994,7 @@ function Chat() {
                               // Clean content for preview
                               (() => {
                                 const { content } = parseMessage(
-                                  replyingTo.message
+                                  replyingTo.message,
                                 );
                                 return content || "Attachment";
                               })()
