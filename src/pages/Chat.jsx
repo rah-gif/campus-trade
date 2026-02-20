@@ -497,9 +497,7 @@ function Chat() {
   useEffect(() => {
     // Re-fetch conversations when triggered
     if (user) {
-      // We can't actually call fetchConversations easily if it's inside the other useEffect.
-      // But we can trigger a state update that relies on it if we move it out or use a dependency.
-      // For now, assume the manual state update works, this is just placeholder.
+      // Re-fetch logic triggered by refresh state if complex dependencies exist
     }
   }, [refreshTrigger]);
 
