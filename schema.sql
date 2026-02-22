@@ -1,5 +1,4 @@
--- CampusTrade Database Schema
--- Based on Visual Architecture
+-- CampusTrade Database Schema (Copy And Paste Supabase SQL editor)
 
 -- 1. Profiles Table (Linked to Auth)
 create table public.profiles (
